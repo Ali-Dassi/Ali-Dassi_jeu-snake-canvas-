@@ -7,24 +7,24 @@
 <style>
     body {
         margin: 0;
-        font-family: Arial;
-        background: linear-gradient(135deg, #1e1e2f, #3a3a5f);
-        color: white;
+        font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        background: linear-gradient(135deg, #383634, #706964);
+        color: rgb(255, 250, 244);
         text-align: center;
     }
 
     h1 {
-        margin-top: 20px;
+        margin-top: 30px;
     }
 
     canvas {
-        background: #111;
-        border: 3px solid white;
+        background: #000000;
+        border: 3px solid rgba(57, 55, 55, 0.695);
         margin-top: 20px;
     }
 
     #score {
-        font-size: 20px;
+        font-size: 25px;
         margin-top: 10px;
     }
 
@@ -33,7 +33,7 @@
         margin-top: 10px;
         cursor: pointer;
         border: none;
-        background: #4CAF50;
+        background: #4bb94f;
         color: white;
         border-radius: 5px;
     }
@@ -43,17 +43,16 @@
 
 <body>
 
-<h1>🐍 Snake Game</h1>
-<div id="score">Score: 0</div>
-<button onclick="startGame()">Start Game</button>
+<h1>🐍 Snake Game 🐍</h1>
+<div id="score">Score : 0</div>
+<button onclick="start()">Start</button>
 
 <br>
 <canvas id="gameCanvas" width="400" height="400"></canvas>
 
 <script>
 const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d");
-
+const ctx = canvas.getContext("2d");// le stylo pour dessiner en 2D
 const box = 20;
 let snake;
 let direction;
@@ -61,7 +60,7 @@ let food;
 let score;
 let game;
 
-function startGame() {
+function start() {
     snake = [{x: 200, y: 200}];
     direction = "RIGHT";
     score = 0;
@@ -88,34 +87,33 @@ function changeDirection(event) {
 }
 
 function draw() {
-    ctx.fillStyle = "#111";
-    ctx.fillRect(0, 0, 400, 400);
+    ctx.fillStyle = "#111";//choisir un couleur
+    ctx.fillRect(0, 0, 400, 400);//dessiner un rect remplie 
 
-    // Dessiner serpent
-    for (let i = 0; i < snake.length; i++) {
-        ctx.fillStyle = i === 0 ? "lime" : "green";
-        ctx.fillRect(snake[i].x, snake[i].y, box, box);
+    for (let i = 0; i < snake.length; i++) {//parcourir snake
+        ctx.fillStyle = i === 0 ? "lime" : "green";//au debut lime puis vert
+        ctx.fillRect(snake[i].x, snake[i].y, box, box);//dessiner chaque partie de snake (rect)
     }
-
-    // Dessiner nourriture
+    
+    // Dessiner nourriture en rouge 
     ctx.fillStyle = "red";
     ctx.fillRect(food.x, food.y, box, box);
 
     let headX = snake[0].x;
     let headY = snake[0].y;
 
-    // Déplacement
+    // Déplacement par ajout ou suppression 
     if (direction === "UP") headY -= box;
     if (direction === "DOWN") headY += box;
     if (direction === "LEFT") headX -= box;
     if (direction === "RIGHT") headX += box;
-
+      
     // Manger nourriture
     if (headX === food.x && headY === food.y) {
         score++;
         food = randomFood();
     } else {
-        snake.pop();
+        snake.pop();//le serpent avance
     }
 
     let newHead = {x: headX, y: headY};
@@ -126,23 +124,23 @@ function draw() {
         headY < 0 || headY >= 400 ||
         collision(newHead, snake)
     ) {
-        clearInterval(game);
+        clearInterval(game);//clear the surface 
         saveScore(score);
         alert("Game Over! Score: " + score);
     }
 
-    snake.unshift(newHead);
+    snake.unshift(newHead);//ajout new head 
 
-    document.getElementById("score").innerText = "Score: " + score;
+    document.getElementById("score").innerText = "Score: " + score;//modifier le score courant
 }
 
 function collision(head, array) {
-    return array.some(segment => segment.x === head.x && segment.y === head.y);
+    return array.some(segment => segment.x === head.x && segment.y === head.y);//verifer le contact
 }
 
-// Sauvegarde score (localStorage)
+
 function saveScore(score) {
-    let best = localStorage.getItem("bestScore") || 0;
+    let best = localStorage.getItem("bestScore") || 0;// Sauvegarde score maximale
     if (score > best) {
         localStorage.setItem("bestScore", score);
         alert("Nouveau record !");
