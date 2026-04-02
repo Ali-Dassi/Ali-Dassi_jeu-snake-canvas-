@@ -66,3 +66,7 @@ Author: Ali-Dassi <ali.dassi@etudiant-fst.utm.tn>
 Date:   Mon Mar 23 21:05:25 2026 +0100
 
     Initial commit
+pour mettre a jour chaque modifications on etulise dans le terminale VS ces cmds :
+git add .
+git commit -m "update"
+git push
